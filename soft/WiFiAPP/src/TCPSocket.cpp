@@ -32,13 +32,13 @@ static void server_connect_cb(void *arg)
 {
     struct espconn *conn = (struct espconn *)arg;
     
-    // Ищем сервер по порту
+    // п≤я┴п╣п╪ я│п╣я─п╡п╣я─ п©п╬ п©п╬я─я┌я┐
     SERVER *cur=servers;
     while (cur)
     {
         if (cur->port == conn->proto.tcp->local_port)
         {
-            // Нашли
+            // п²п╟я┬п╩п╦
             espconn_set_opt(conn, ESPCONN_REUSEADDR | ESPCONN_NODELAY);
             TCPSocket *sock=cur->srv->clientConnected(conn);
             if (sock)
@@ -51,7 +51,7 @@ static void server_connect_cb(void *arg)
         cur=cur->next;
     }
     
-    // Не нашли
+    // п²п╣ п╫п╟я┬п╩п╦
     /*espconn_disconnect(conn);
     espconn_delete(conn);
     if (conn->proto.tcp) os_free(conn->proto.tcp);
@@ -161,14 +161,14 @@ static void dns_cb(const char *name, ip_addr_t *ipaddr, void *arg)
         sock->__conn->proto.tcp->remote_port=sock->__port;
         os_memcpy(sock->__conn->proto.tcp->remote_ip, &ipaddr->addr, 4);
 	
-	// Регистрируем вызовы
+	// п═п╣пЁп╦я│я┌я─п╦я─я┐п╣п╪ п╡я▀п╥п╬п╡я▀
         espconn_regist_connectcb(sock->__conn, client_connect_cb);
 	espconn_regist_recvcb(sock->__conn, recv_cb);
 	espconn_regist_sentcb(sock->__conn, sent_cb);
         espconn_regist_reconcb(sock->__conn, recon_cb);
         espconn_regist_disconcb(sock->__conn, discon_cb);
 	
-	// Подключаемся
+	// п÷п╬п╢п╨п╩я▌я┤п╟п╣п╪я│я▐
 	espconn_connect(sock->__conn);
     }
 }
@@ -185,14 +185,14 @@ TCPSocket::TCPSocket()
     __sendq_used=0;
     __conn=0;
     
-    // Настраиваем таймер
+    // п²п╟я│я┌я─п╟п╦п╡п╟п╣п╪ я┌п╟п╧п╪п╣я─
     os_timer_setfn(&__tmr, (os_timer_func_t*)poll_cb, (void*)this);
 }
 
 
 TCPSocket::TCPSocket(int port)
 {
-    // Настраиваем таймер
+    // п²п╟я│я┌я─п╟п╦п╡п╟п╣п╪ я┌п╟п╧п╪п╣я─
     os_timer_setfn(&__tmr, (os_timer_func_t*)poll_cb, (void*)this);
     
     listen(port);
@@ -201,7 +201,7 @@ TCPSocket::TCPSocket(int port)
 
 TCPSocket::TCPSocket(const char *host, int port)
 {
-    // Настраиваем таймер
+    // п²п╟я│я┌я─п╟п╦п╡п╟п╣п╪ я┌п╟п╧п╪п╣я─
     os_timer_setfn(&__tmr, (os_timer_func_t*)poll_cb, (void*)this);
     
     connectToHost(host, port);
@@ -210,7 +210,7 @@ TCPSocket::TCPSocket(const char *host, int port)
 
 TCPSocket::TCPSocket(TCPSocket *parent, struct espconn *c)
 {
-    // Сохраняем ссылку на класс в сокете
+    // п║п╬я┘я─п╟п╫я▐п╣п╪ я│я│я▀п╩п╨я┐ п╫п╟ п╨п╩п╟я│я│ п╡ я│п╬п╨п╣я┌п╣
     __parent=parent;
     __is_server=false;
     __sendq=0;
@@ -221,16 +221,16 @@ TCPSocket::TCPSocket(TCPSocket *parent, struct espconn *c)
     __conn->reverse=(void*)this;
     espconn_set_opt(__conn, ESPCONN_REUSEADDR | ESPCONN_NODELAY);
     
-    // Регистрируем вызовы
+    // п═п╣пЁп╦я│я┌я─п╦я─я┐п╣п╪ п╡я▀п╥п╬п╡я▀
     espconn_regist_recvcb(__conn, recv_cb);
     espconn_regist_reconcb(__conn, recon_cb);
     espconn_regist_sentcb(__conn, sent_cb);
     espconn_regist_disconcb(__conn, discon_cb);
     
-    // Настраиваем таймер
+    // п²п╟я│я┌я─п╟п╦п╡п╟п╣п╪ я┌п╟п╧п╪п╣я─
     os_timer_setfn(&__tmr, (os_timer_func_t*)poll_cb, (void*)this);
     
-    // Дергаем обработчик того, что сокет подключился
+    // п■п╣я─пЁп╟п╣п╪ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨ я┌п╬пЁп╬, я┤я┌п╬ я│п╬п╨п╣я┌ п©п╬п╢п╨п╩я▌я┤п╦п╩я│я▐
     connected();
 }
 
@@ -253,7 +253,7 @@ TCPSocket::~TCPSocket()
     
     if (__is_server)
     {
-	// Удаляем себя из пула серверов
+	// пёп╢п╟п╩я▐п╣п╪ я│п╣п╠я▐ п╦п╥ п©я┐п╩п╟ я│п╣я─п╡п╣я─п╬п╡
 	SERVER *prev=0, *cur=servers;
 	
 	while (cur)
@@ -280,7 +280,7 @@ TCPSocket::~TCPSocket()
 
 void TCPSocket::connectToHost(const char *host, int port)
 {
-    // Создаем сокет
+    // п║п╬п╥п╢п╟п╣п╪ я│п╬п╨п╣я┌
     __parent=0;
     __is_server=false;
     __port=port;
@@ -311,7 +311,7 @@ void TCPSocket::connectToHost(const char *host, int port)
 
 void TCPSocket::listen(int port)
 {
-    // Создаем сокет
+    // п║п╬п╥п╢п╟п╣п╪ я│п╬п╨п╣я┌
     __parent=0;
     __is_server=true;
     __port=port;
@@ -322,24 +322,24 @@ void TCPSocket::listen(int port)
     __conn=(struct espconn *)os_zalloc(sizeof(struct espconn));
     ets_memset(__conn, 0, sizeof(struct espconn));
     
-    // Создаем сервер
+    // п║п╬п╥п╢п╟п╣п╪ я│п╣я─п╡п╣я─
     espconn_create(__conn);
     __conn->type=ESPCONN_TCP;
     __conn->state=ESPCONN_NONE;
     __conn->proto.tcp=(esp_tcp *)os_zalloc(sizeof(esp_tcp));
     __conn->proto.tcp->local_port=port;
     
-    // Добавляем в пул серверов
+    // п■п╬п╠п╟п╡п╩я▐п╣п╪ п╡ п©я┐п╩ я│п╣я─п╡п╣я─п╬п╡
     SERVER *s=new SERVER;
     s->port=__port;
     s->srv=this;
     s->next=servers;
     servers=s;
     
-    // Функция при подключении
+    // п╓я┐п╫п╨я├п╦я▐ п©я─п╦ п©п╬п╢п╨п╩я▌я┤п╣п╫п╦п╦
     espconn_regist_connectcb(__conn, server_connect_cb);
     
-    // Принимаем подключения
+    // п÷я─п╦п╫п╦п╪п╟п╣п╪ п©п╬п╢п╨п╩я▌я┤п╣п╫п╦я▐
     espconn_accept(__conn);
 }
 
@@ -369,7 +369,7 @@ void TCPSocket::dataSent_Q()
 {
     if (__sendq)
     {
-	// Есть что отправить из очереди
+	// п∙я│я┌я▄ я┤я┌п╬ п╬я┌п©я─п╟п╡п╦я┌я▄ п╦п╥ п╬я┤п╣я─п╣п╢п╦
 	espconn_send(__conn, __sendq->data, __sendq->len);
 	
 	__sendq_used-=__sendq->len;
@@ -380,7 +380,7 @@ void TCPSocket::dataSent_Q()
 	__sendq=n;
     }
     
-    // Если нет очереди отправки (или она пуста) - дергаем вызов dataSent
+    // п∙я│п╩п╦ п╫п╣я┌ п╬я┤п╣я─п╣п╢п╦ п╬я┌п©я─п╟п╡п╨п╦ (п╦п╩п╦ п╬п╫п╟ п©я┐я│я┌п╟) - п╢п╣я─пЁп╟п╣п╪ п╡я▀п╥п╬п╡ dataSent
     if (! __sendq) dataSent();
 }
 
@@ -406,33 +406,33 @@ bool TCPSocket::send(const uint8_t *data, int len)
     
     if (! __sendq)
     {
-	// Нет очереди - отправляем так
+	// п²п╣я┌ п╬я┤п╣я─п╣п╢п╦ - п╬я┌п©я─п╟п╡п╩я▐п╣п╪ я┌п╟п╨
 	rv=espconn_send(__conn, (uint8_t*)data, len);
     }
     
     if ( (rv != 0) && (__sendq_len > 0) && (__sendq_used < __sendq_len) )
     {
-	// Можно поместить в очередь
+	// п°п╬п╤п╫п╬ п©п╬п╪п╣я│я┌п╦я┌я▄ п╡ п╬я┤п╣я─п╣п╢я▄
 	struct sendq *v=(struct sendq*)os_malloc(sizeof(struct sendq));
 	if (v) v->data=(uint8_t*)os_malloc(len);
 	if ( (v) && (v->data) )
 	{
-	    // Создали буфер
+	    // п║п╬п╥п╢п╟п╩п╦ п╠я┐я└п╣я─
 	    os_memcpy(v->data, data, len);
 	    v->len=len;
 	    v->next=0;
 	    
-	    // Ищем конец очереди
+	    // п≤я┴п╣п╪ п╨п╬п╫п╣я├ п╬я┤п╣я─п╣п╢п╦
 	    struct sendq **q=&__sendq;
 	    while (*q) q=&((*q)->next);
 	    
-	    // Удачно
+	    // пёп╢п╟я┤п╫п╬
 	    __sendq_len+=len;
 	    (*q)=v;
 	    rv=0;
 	} else
 	{
-	    // Ошибка выделения памяти
+	    // п·я┬п╦п╠п╨п╟ п╡я▀п╢п╣п╩п╣п╫п╦я▐ п©п╟п╪я▐я┌п╦
 	    if (v->data) os_free((void*)v->data);
 	    if (v) os_free((void*)v);
 	}
@@ -448,12 +448,12 @@ bool TCPSocket::sendAndFree(const uint8_t *data, int len)
     
     if (! __sendq)
     {
-	// Нет очереди - отправляем так
+	// п²п╣я┌ п╬я┤п╣я─п╣п╢п╦ - п╬я┌п©я─п╟п╡п╩я▐п╣п╪ я┌п╟п╨
 	rv=espconn_send(__conn, (uint8_t*)data, len);
 	
 	if (rv==0)
 	{
-	    // Сразу отправилось - можно убить буфер
+	    // п║я─п╟п╥я┐ п╬я┌п©я─п╟п╡п╦п╩п╬я│я▄ - п╪п╬п╤п╫п╬ я┐п╠п╦я┌я▄ п╠я┐я└п╣я─
 	    os_free((void*)data);
 	    return true;
 	}
@@ -461,26 +461,26 @@ bool TCPSocket::sendAndFree(const uint8_t *data, int len)
     
     if ( (rv != 0) && (__sendq_len > 0) && (__sendq_used < __sendq_len) )
     {
-	// Можно поместить в очередь
+	// п°п╬п╤п╫п╬ п©п╬п╪п╣я│я┌п╦я┌я▄ п╡ п╬я┤п╣я─п╣п╢я▄
 	struct sendq *v=(struct sendq*)os_malloc(sizeof(struct sendq));
 	if (v)
 	{
-	    // Создали буфер
+	    // п║п╬п╥п╢п╟п╩п╦ п╠я┐я└п╣я─
 	    v->data=(uint8_t*)data;
 	    v->len=len;
 	    v->next=0;
 	    
-	    // Ищем конец очереди
+	    // п≤я┴п╣п╪ п╨п╬п╫п╣я├ п╬я┤п╣я─п╣п╢п╦
 	    struct sendq **q=&__sendq;
 	    while (*q) q=&((*q)->next);
 	    
-	    // Удачно
+	    // пёп╢п╟я┤п╫п╬
 	    __sendq_len+=len;
 	    (*q)=v;
 	    rv=0;
 	} else
 	{
-	    // Ошибка выделения памяти
+	    // п·я┬п╦п╠п╨п╟ п╡я▀п╢п╣п╩п╣п╫п╦я▐ п©п╟п╪я▐я┌п╦
 	    rv=-1;
 	}
     }

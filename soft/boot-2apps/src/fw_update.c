@@ -42,7 +42,7 @@ void fw_update(void)
 {
     int i;
     
-    // Читаем и проверяем заголовок
+    // п╖п╦я┌п╟п╣п╪ п╦ п©я─п╬п╡п╣я─я▐п╣п╪ п╥п╟пЁп╬п╩п╬п╡п╬п╨
     SPIRead(0x80000, &hdrbuf, 4096);
     if ( (ets_memcmp(hdr->magic, "FWUPDATE", sizeof(hdr->magic))!=0) ||
 	 (CRC16(CRC16_INIT, hdrbuf, sizeof(struct header)) != CRC16_OK) )
@@ -51,15 +51,15 @@ void fw_update(void)
 	return;
     }
     
-    // На первом проходе проверяем контрольные суммы данных во флэше
+    // п²п╟ п©п╣я─п╡п╬п╪ п©я─п╬я┘п╬п╢п╣ п©я─п╬п╡п╣я─я▐п╣п╪ п╨п╬п╫я┌я─п╬п╩я▄п╫я▀п╣ я│я┐п╪п╪я▀ п╢п╟п╫п╫я▀я┘ п╡п╬ я└п╩я█я┬п╣
     ets_printf("FW Update: checking firmware...");
     if (! check_fw_crc(0x81000))
     {
-	// Не будем обновлять
+	// п²п╣ п╠я┐п╢п╣п╪ п╬п╠п╫п╬п╡п╩я▐я┌я▄
 	return;
     }
     
-    // Копируем данные
+    // п п╬п©п╦я─я┐п╣п╪ п╢п╟п╫п╫я▀п╣
     ets_printf("FW Update: flashing...");
     for (i=0; i<hdr->size4k; i++)
     {
@@ -72,20 +72,20 @@ void fw_update(void)
     }
     ets_printf("\n");
     
-    // Проверяем прошивку
+    // п÷я─п╬п╡п╣я─я▐п╣п╪ п©я─п╬я┬п╦п╡п╨я┐
     ets_printf("Checking firmware...");
     if (! check_fw_crc(0x01000))
     {
-	// Не будем стирать прошивку
+	// п²п╣ п╠я┐п╢п╣п╪ я│я┌п╦я─п╟я┌я▄ п©я─п╬я┬п╦п╡п╨я┐
 	ets_printf("FW Update: updated firmware ERROR ! - not erasing update\n");
 	reboot(0);
     }
     
-    // Можно стирать заголовок обновления
+    // п°п╬п╤п╫п╬ я│я┌п╦я─п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐
     SPIUnlock();
     SPIEraseSector(0x80);
     
-    // Готово
+    // п⌠п╬я┌п╬п╡п╬
     ets_printf("FW Update: upgrade successfull !\n");
     
     reboot(0);

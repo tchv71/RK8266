@@ -5,10 +5,10 @@
 
 void reboot(uint32_t value)
 {
-    // Значение для загрузчика
+    // п≈п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐ п╥п╟пЁя─я┐п╥я┤п╦п╨п╟
     WRITE_PERI_REG(0x60001200, value);
     
-    // Запускаем Watchdog, чтобы он нас перегрузил
+    // п≈п╟п©я┐я│п╨п╟п╣п╪ Watchdog, я┤я┌п╬п╠я▀ п╬п╫ п╫п╟я│ п©п╣я─п╣пЁя─я┐п╥п╦п╩
     WRITE_PERI_REG(0x60000900, 0x3C);	// wdt disable, stage1 disable
     WRITE_PERI_REG(0x60000904, 1);		// reload stage0 = 0,84sec
     WRITE_PERI_REG(0x60000900, 0x3D);	// wdt enable, stage1 disable

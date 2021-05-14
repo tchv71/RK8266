@@ -19,21 +19,21 @@
 #include "board.h"
 
 
-// Отношение частоты ESP8266 к частоте эмуляции
+// п·я┌п╫п╬я┬п╣п╫п╦п╣ я┤п╟я│я┌п╬я┌я▀ ESP8266 п╨ я┤п╟я│я┌п╬я┌п╣ я█п╪я┐п╩я▐я├п╦п╦
 volatile uint8_t i8080_speed_K=90;	// 160/1.78
 
 
 void main_program(void)
 {
-    // Инитим файловую систему
+    // п≤п╫п╦я┌п╦п╪ я└п╟п╧п╩п╬п╡я┐я▌ я│п╦я│я┌п╣п╪я┐
     ffs_init();
     
-    // Инитим процессор
+    // п≤п╫п╦я┌п╦п╪ п©я─п╬я├п╣я│я│п╬я─
     i8080_hal_init();
     i8080_init();
     i8080_jump(0xF800);
     
-    // Читаем образы ПЗУ
+    // п╖п╦я┌п╟п╣п╪ п╬п╠я─п╟п╥я▀ п÷п≈пё
     {
         int i;
 	
@@ -41,7 +41,7 @@ void main_program(void)
         {
             if (fat[i].type == TYPE_ROM)
             {
-                // Образ
+                // п·п╠я─п╟п╥
                 const char *name=ffs_name(i);
                 ets_printf("Loading ROM '%s'\n", name);
                 if ( (ets_strlen(name)!=4) ||
@@ -50,28 +50,28 @@ void main_program(void)
                      (! is_xdigit(name[2])) ||
                      (! is_xdigit(name[3])) )
                 {
-                    // Неверное имя файла
+                    // п²п╣п╡п╣я─п╫п╬п╣ п╦п╪я▐ я└п╟п╧п╩п╟
                     ets_printf("  Bad file name\n");
                     continue;
                 }
 		
-                // Адрес
+                // п░п╢я─п╣я│
                 int addr=parse_hex(name);
                 if ( (addr >= 0xE000) && (addr+fat[i].size <= 0x10000) )
                 {
-                    // ПЗУ
-                    // Загружаем в IRAM (можно использовать ffs_read, т.к. он работает с 4-байтными словами)
+                    // п÷п≈пё
+                    // п≈п╟пЁя─я┐п╤п╟п╣п╪ п╡ IRAM (п╪п╬п╤п╫п╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ ffs_read, я┌.п╨. п╬п╫ я─п╟п╠п╬я┌п╟п╣я┌ я│ 4-п╠п╟п╧я┌п╫я▀п╪п╦ я│п╩п╬п╡п╟п╪п╦)
                     ffs_read(i, 0, i8080_hal_rom()+(addr-0xE000), fat[i].size);
                     ets_printf("  OK\n");
                 } else
                 if ( (addr < 0x8000) && (addr+fat[i].size <= 0x8000) )
                 {
-                    // ОЗУ
+                    // п·п≈пё
                     ffs_read(i, 0, i8080_hal_memory()+addr, fat[i].size);
                     ets_printf("  OK\n");
                 } else
                 {
-                    // Неверный адрес или размер
+                    // п²п╣п╡п╣я─п╫я▀п╧ п╟п╢я─п╣я│ п╦п╩п╦ я─п╟п╥п╪п╣я─
                     ets_printf("  Bad address or size\n");
                     continue;
                 }
@@ -80,20 +80,20 @@ void main_program(void)
         }
     }
     
-    // Инитим экран
+    // п≤п╫п╦я┌п╦п╪ я█п╨я─п╟п╫
     tv_init();
     vg75_init((uint8_t*)i8080_hal_memory());
     tv_start();
     
-    // Инитим клавиатуру
+    // п≤п╫п╦я┌п╦п╪ п╨п╩п╟п╡п╦п╟я┌я┐я─я┐
     kbd_init();
     ps2_init();
     keymap_init();
     
-    // Инитим магнитофон
+    // п≤п╫п╦я┌п╦п╪ п╪п╟пЁп╫п╦я┌п╬я└п╬п╫
     tape_init();
     
-    // Запускаем эмуляцию
+    // п≈п╟п©я┐я│п╨п╟п╣п╪ я█п╪я┐п╩я▐я├п╦я▌
     uint32_t prev_T=getCycleCount();
     uint32_t sec_T=prev_T;
     uint32_t cycles=0, sec_cycles=0;
@@ -105,7 +105,7 @@ void main_program(void)
 	
         if ( (dT > 0) || (turbo) )
         {
-            // Можно запускать эмуляцию проца
+            // п°п╬п╤п╫п╬ п╥п╟п©я┐я│п╨п╟я┌я▄ я█п╪я┐п╩я▐я├п╦я▌ п©я─п╬я├п╟
             uint8_t n=turbo ? 200 : 20;
             while (n--)
             {
@@ -123,62 +123,62 @@ void main_program(void)
 	
         if ( ((uint32_t)(T-sec_T)) >= 160000000)
         {
-            // Прошла секунда
+            // п÷я─п╬я┬п╩п╟ я│п╣п╨я┐п╫п╢п╟
             ets_printf("Speed=%d rtc=0x%08x\n", (int)sec_cycles, READ_PERI_REG(0x60001200));
             //kbd_dump();
             sec_cycles=0;
             sec_T=T;
         }
 	
-	// Вся периодика
+	// п▓я│я▐ п©п╣я─п╦п╬п╢п╦п╨п╟
 	
 	if (tape_periodic())
 	{
-	    // Закончена запись на магнитофон - надо предложить сохранить файл
+	    // п≈п╟п╨п╬п╫я┤п╣п╫п╟ п╥п╟п©п╦я│я▄ п╫п╟ п╪п╟пЁп╫п╦я┌п╬я└п╬п╫ - п╫п╟п╢п╬ п©я─п╣п╢п╩п╬п╤п╦я┌я▄ я│п╬я┘я─п╟п╫п╦я┌я▄ я└п╟п╧п╩
 	    ui_start();
 		tape_save();
 	    ui_stop();
 	    
-	    // Сбрасываем время циклов
+	    // п║п╠я─п╟я│я▀п╡п╟п╣п╪ п╡я─п╣п╪я▐ я├п╦п╨п╩п╬п╡
 	    sec_T=prev_T=getCycleCount();
 	    sec_cycles=0;
 	}
 	
 	if (win)
 	{
-	    // Win нажата - обрабатываем спец-команды
+	    // Win п╫п╟п╤п╟я┌п╟ - п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪ я│п©п╣я├-п╨п╬п╪п╟п╫п╢я▀
 	    uint16_t c=ps2_read();
 	    switch (c)
 	    {
 		case PS2_LEFT:
-		    // Экран влево
+		    // п╜п╨я─п╟п╫ п╡п╩п╣п╡п╬
 		    if (screen.x_offset > 0) screen.x_offset--;
 		    break;
 		    
 		case PS2_RIGHT:
-		    // Экран вправо
+		    // п╜п╨я─п╟п╫ п╡п©я─п╟п╡п╬
 		    if (screen.x_offset < 16) screen.x_offset++;
 		    break;
 		    
 		case PS2_UP:
-		    // Экран вверх
+		    // п╜п╨я─п╟п╫ п╡п╡п╣я─я┘
 		    if (screen.y_offset > 8) screen.y_offset-=8; else screen.y_offset=0;
 		    break;
 		    
 		case PS2_DOWN:
-		    // Экран вниз
+		    // п╜п╨я─п╟п╫ п╡п╫п╦п╥
 		    if (screen.y_offset < 8*8) screen.y_offset+=8;
 		    break;
 		    
 		case PS2_L_WIN | 0x8000:
 		case PS2_R_WIN | 0x8000:
-		    // Отжали Win
+		    // п·я┌п╤п╟п╩п╦ Win
 		    win=false;
 		    break;
 	    }
 	} else
 	{
-	    // Win не нажата
+	    // Win п╫п╣ п╫п╟п╤п╟я┌п╟
 	    uint16_t c;
 	    bool rst=false;
 	    
@@ -191,7 +191,7 @@ void main_program(void)
     		    break;
     		
     		case PS2_ESC:
-    		    // Меню
+    		    // п°п╣п╫я▌
 		    ui_start();
 			menu();
 		    ui_stop();
@@ -199,42 +199,42 @@ void main_program(void)
 		    break;
 		
 		case PS2_F5:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE000);
 		    break;
 		
 		case PS2_F6:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE004);
 		    break;
 		
 		case PS2_F7:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE008);
 		    break;
 		
 		case PS2_F8:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE00C);
 		    break;
 		
 		case PS2_F10:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE010);
 		    break;
 		
 		case PS2_F9:
-		    // Переход на ПЗУ
+		    // п÷п╣я─п╣я┘п╬п╢ п╫п╟ п÷п≈пё
 		    i8080_jump(0xE014);
 		    break;
 		
 		case PS2_F11:
-		    // Выход в монитор
+		    // п▓я▀я┘п╬п╢ п╡ п╪п╬п╫п╦я┌п╬я─
 		    i8080_jump(0xF800);
 		    break;
 		
 		case PS2_F12:
-		    // Файловый менеджен
+		    // п╓п╟п╧п╩п╬п╡я▀п╧ п╪п╣п╫п╣п╢п╤п╣п╫
 		    ui_start();
 			menu_fileman();
 		    ui_stop();
@@ -242,7 +242,7 @@ void main_program(void)
 		    break;
 		
 		case PS2_PAUSE:
-		    // Сброс
+		    // п║п╠я─п╬я│
         	    i8080_init();
         	    i8080_hal_init();
         	    i8080_jump(0xF800);
@@ -254,23 +254,23 @@ void main_program(void)
 		    break;
 		
 		case PS2_SCROLL:
-		    // Переключатель турбо
+		    // п÷п╣я─п╣п╨п╩я▌я┤п╟я┌п╣п╩я▄ я┌я┐я─п╠п╬
 		    turbo=!turbo;
 		    break;
 		
 		case PS2_L_WIN:
 		case PS2_R_WIN:
-		    // Нажали Win
+		    // п²п╟п╤п╟п╩п╦ Win
 		    win=true;
 		    break;
 		
 		case PS2_MENU:
-		    // Отобразить справку
+		    // п·я┌п╬п╠я─п╟п╥п╦я┌я▄ я│п©я─п╟п╡п╨я┐
 		    help_display();
 		    break;
 		
 		/*case PS2_F12:
-		    // Дамп экрана
+		    // п■п╟п╪п© я█п╨я─п╟п╫п╟
 		    {
 			ets_printf("VRAM w=%d h=%d:\n", screen.screen_w, screen.screen_h);
 			int i,j;
@@ -294,7 +294,7 @@ void main_program(void)
     	    
     	    if (rst)
     	    {
-	        // Сбрасываем время циклов
+	        // п║п╠я─п╟я│я▀п╡п╟п╣п╪ п╡я─п╣п╪я▐ я├п╦п╨п╩п╬п╡
 		sec_T=prev_T=getCycleCount();
 		sec_cycles=0;
 	    }

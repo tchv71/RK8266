@@ -3,7 +3,7 @@
 #include "tape.h"
 
 
-// Модификаторы
+// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
 #define MOD_SS	0x20
 #define MOD_US	0x40
 #define MOD_RL	0x80
@@ -24,11 +24,11 @@ void kbd_press(uint16_t code)
     //ets_printf("PRESS 0x%04X\n", code);
     if (code >> 12)
     {
-	// Модификаторы
+	// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
         mods&=~((code >> 8) & 0xf0);
     } else
     {
-	// Скан-матрица
+	// п║п╨п╟п╫-п╪п╟я┌я─п╦я├п╟
     	kbd[ (code >> 8) & 0x07 ]&=~(code & 0xff);
     }
 }
@@ -39,11 +39,11 @@ void kbd_release(uint16_t code)
     //ets_printf("RELEASE 0x%04X\n", code);
     if (code >> 12)
     {
-	// Модификаторы
+	// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
         mods|=((code >> 8) & 0xf0);
     } else
     {
-	// Скан-матрица
+	// п║п╨п╟п╫-п╪п╟я┌я─п╦я├п╟
         kbd[ (code >> 8) & 0x07 ]|=(code & 0xff);
     }
 }
@@ -51,11 +51,11 @@ void kbd_release(uint16_t code)
 
 void kbd_releaseAll(uint16_t code)
 {
-    // Отпускаем все, кроме модификаторов
+    // п·я┌п©я┐я│п╨п╟п╣п╪ п╡я│п╣, п╨я─п╬п╪п╣ п╪п╬п╢п╦я└п╦п╨п╟я┌п╬я─п╬п╡
     //ets_printf("RELEASE ALL\n");
     if (code >> 12)
     {
-	// Модификаторы
+	// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
         mods|=((code >> 8) & 0xf0);
     }
     ets_memset(kbd, 0xff, sizeof(kbd));
@@ -96,7 +96,7 @@ void vv55_i_W(uint8_t A, uint8_t value)
     {
 	static uint8_t portC=0x00;
 	
-	// Обарабатываем запись на магнитофон
+	// п·п╠п╟я─п╟п╠п╟я┌я▀п╡п╟п╣п╪ п╥п╟п©п╦я│я▄ п╫п╟ п╪п╟пЁп╫п╦я┌п╬я└п╬п╫
 	if ((portC ^ value) & 1) tape_in();
 	portC=value;
     } else
@@ -104,10 +104,10 @@ void vv55_i_W(uint8_t A, uint8_t value)
     {
 	if (! (value & 0x80))
 	{
-	    // Это управление
+	    // п╜я┌п╬ я┐п©я─п╟п╡п╩п╣п╫п╦п╣
 	    uint8_t pin=(value >> 1) & 0x07;
 	    value&=0x01;
-	    if (pin==3) rus=value;	// РУС/ЛАТ
+	    if (pin==3) rus=value;	// п═пёп║/п⌡п░п╒
 	}
     }
 }
@@ -118,11 +118,11 @@ uint8_t vv55_i_R(uint8_t A)
     switch (A)
     {
 	case 0:
-	    // Канал A: выход
+	    // п п╟п╫п╟п╩ A: п╡я▀я┘п╬п╢
 	    return scanline;
 	
 	case 1:
-	    // Канал B: вход
+	    // п п╟п╫п╟п╩ B: п╡я┘п╬п╢
 	    {
 		uint8_t scan=~scanline, i, v=0xff;
 		for (i=0; i<8; i++)
@@ -133,7 +133,7 @@ uint8_t vv55_i_R(uint8_t A)
 	    break;
 	
 	case 2:
-	    // Канал C: модификаторы + магнитофон
+	    // п п╟п╫п╟п╩ C: п╪п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀ + п╪п╟пЁп╫п╦я┌п╬я└п╬п╫
 	    return (mods & 0xEF) | (tape_out() ? 0x10 : 0x00);
 	
 	case 3:

@@ -98,10 +98,10 @@ int main()
     };
     FILE *out=fopen("httpfs.bin", "wb");
     
-    int offset=sizeof(struct ent)*(n_files+1);	// позиция первых данных
+    int offset=sizeof(struct ent)*(n_files+1);	// п©п╬п╥п╦я├п╦я▐ п©п╣я─п╡я▀я┘ п╢п╟п╫п╫я▀я┘
     int i;
     
-    // Записываем каталог файлов
+    // п≈п╟п©п╦я│я▀п╡п╟п╣п╪ п╨п╟я┌п╟п╩п╬пЁ я└п╟п╧п╩п╬п╡
     for (i=0; i<n_files; i++)
     {
 	struct ent e;
@@ -115,14 +115,14 @@ int main()
 	offset+=(e.len+3) & ~3;
     }
     
-    // Записываем последнюю пустую запись
+    // п≈п╟п©п╦я│я▀п╡п╟п╣п╪ п©п╬я│п╩п╣п╢п╫я▌я▌ п©я┐я│я┌я┐я▌ п╥п╟п©п╦я│я▄
     {
 	struct ent e;
 	memset(&e, 0x00, sizeof(e));
 	fwrite(&e, 1, sizeof(e), out);
     }
     
-    // Записываем данные файлов
+    // п≈п╟п©п╦я│я▀п╡п╟п╣п╪ п╢п╟п╫п╫я▀п╣ я└п╟п╧п╩п╬п╡
     for (i=0; i<n_files; i++)
     {
 	fseek(out, files[i].offs, SEEK_SET);

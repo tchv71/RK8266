@@ -10,26 +10,26 @@
 class TCPSocket
 {
 public:
-    // Создать пустой сокет
+    // п║п╬п╥п╢п╟я┌я▄ п©я┐я│я┌п╬п╧ я│п╬п╨п╣я┌
     TCPSocket();
     
-    // Создать сервер
+    // п║п╬п╥п╢п╟я┌я▄ я│п╣я─п╡п╣я─
     TCPSocket(int port);
     
-    // Создать клиент
+    // п║п╬п╥п╢п╟я┌я▄ п╨п╩п╦п╣п╫я┌
     TCPSocket(const char *host, int port);
     
-    // Создать сокет из соединения
+    // п║п╬п╥п╢п╟я┌я▄ я│п╬п╨п╣я┌ п╦п╥ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐
     TCPSocket(TCPSocket *parent, struct espconn *c);
     
-    // Убить сокет
+    // пёп╠п╦я┌я▄ я│п╬п╨п╣я┌
     virtual ~TCPSocket();
     
     
-    // Подключиться к хосту
+    // п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄я│я▐ п╨ я┘п╬я│я┌я┐
     void connectToHost(const char *host, int port);
     
-    // Запустить сервер
+    // п≈п╟п©я┐я│я┌п╦я┌я▄ я│п╣я─п╡п╣я─
     void listen(int port);
     
     

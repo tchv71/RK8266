@@ -1,16 +1,16 @@
 #! /bin/bash
 
-# Получаем номер билда
+# п÷п╬п╩я┐я┤п╟п╣п╪ п╫п╬п╪п╣я─ п╠п╦п╩п╢п╟
 BUILD=`git rev-list --count HEAD`
 
 
-# Удаляем старые файлы
+# пёп╢п╟п╩я▐п╣п╪ я│я┌п╟я─я▀п╣ я└п╟п╧п╩я▀
 if [ -d builds/$BUILD ]; then
     rm -rf builds/$BUILD
 fi
 
 
-# Собираем весь софт
+# п║п╬п╠п╦я─п╟п╣п╪ п╡п╣я│я▄ я│п╬я└я┌
 cd soft
 
 cd boot-2apps
@@ -33,10 +33,10 @@ cd ..
 cd ..
 
 
-# Создаем каталог для билда
+# п║п╬п╥п╢п╟п╣п╪ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ п╠п╦п╩п╢п╟
 mkdir -p builds/$BUILD || exit
 
-# Копируем файлы
+# п п╬п©п╦я─я┐п╣п╪ я└п╟п╧п╩я▀
 cp soft/mkfw/0x00000.bin builds/$BUILD || exit
 cp soft/mkfw/fota.bin builds/$BUILD || exit
 

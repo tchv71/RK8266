@@ -9,7 +9,7 @@
 
 void ui_clear(void)
 {
-    // Очищаем все, кроме строки статуса
+    // п·я┤п╦я┴п╟п╣п╪ п╡я│п╣, п╨я─п╬п╪п╣ я│я┌я─п╬п╨п╦ я│я┌п╟я┌я┐я│п╟
     os_memset(&vram[1][0], 0x00, sizeof(vram)-50);
 }
 
@@ -29,7 +29,7 @@ void ui_draw_list(const char *s)
     {
 	for (uint8_t x=LIST_X; (*s) && ((*s)!='\n'); x++)
 	    vram[y][x]=(*s++);
-	if (*s) s++;	// пропускаем '\n'
+	if (*s) s++;	// п©я─п╬п©я┐я│п╨п╟п╣п╪ '\n'
 	y++;
     }
 }
@@ -41,7 +41,7 @@ void ui_draw_text(uint8_t x, uint8_t y, const char *s)
     {
 	for (uint8_t xx=x; (*s) && ((*s)!='\n'); xx++)
 	    vram[y][xx]=(*s++);
-	if (*s) s++;	// пропускаем '\n'
+	if (*s) s++;	// п©я─п╬п©я┐я│п╨п╟п╣п╪ '\n'
 	y++;
     }
 }
@@ -57,45 +57,45 @@ PT_THREAD(ui_select(struct pt *pt))
 	if (ui_select_n < 0) ui_select_n=0;
 	while (1)
 	{
-	    // Очищаем предыдущую позицию
+	    // п·я┤п╦я┴п╟п╣п╪ п©я─п╣п╢я▀п╢я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌
 	    os_memcpy(&vram[LIST_Y+prev][LIST_X-4], "    ", 4);
 	    
-	    // Рисуем новую позицию
+	    // п═п╦я│я┐п╣п╪ п╫п╬п╡я┐я▌ п©п╬п╥п╦я├п╦я▌
 	    os_memcpy(&vram[LIST_Y+ui_select_n][LIST_X-4], "--> ", 4);
 	    
-	    // Сохраняем текущую позицию как предыдущую для перерисовки
+	    // п║п╬я┘я─п╟п╫я▐п╣п╪ я┌п╣п╨я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌ п╨п╟п╨ п©я─п╣п╢я▀п╢я┐я┴я┐я▌ п╢п╩я▐ п©п╣я─п╣я─п╦я│п╬п╡п╨п╦
 	    prev=ui_select_n;
 	    
-	    // Читаем клаву
+	    // п╖п╦я┌п╟п╣п╪ п╨п╩п╟п╡я┐
 	    while (1)
 	    {
 		c=ps2_sym();
 		if (c==KEY_ESC)
 		{
-		    // Отмена
+		    // п·я┌п╪п╣п╫п╟
 		    ui_select_n=-1;
 		    PT_EXIT(pt);
 		} else
 		if (c==KEY_ENTER)
 		{
-		    // Ввод
+		    // п▓п╡п╬п╢
 		    PT_EXIT(pt);
 		} else
 		if ( (c==KEY_UP) && (ui_select_n > 0) )
 		{
-		    // Вверх
+		    // п▓п╡п╣я─я┘
 		    ui_select_n--;
 		    break;
 		} else
 		if ( (c==KEY_DOWN) && (ui_select_n < ui_select_count-1) )
 		{
-		    // Вниз
+		    // п▓п╫п╦п╥
 		    ui_select_n++;
 		    break;
 		} else
 		if ( (c>='1') && (c<='9') )
 		{
-		    // Выбор нужного пункта по номеру
+		    // п▓я▀п╠п╬я─ п╫я┐п╤п╫п╬пЁп╬ п©я┐п╫п╨я┌п╟ п©п╬ п╫п╬п╪п╣я─я┐
 		    uint8_t n=c-'1';
 		    if (n < ui_select_count)
 		    {
@@ -104,7 +104,7 @@ PT_THREAD(ui_select(struct pt *pt))
 		    }
 		}
 		
-		// Ждем
+		// п√п╢п╣п╪
 		PT_SLEEP(10);
 	    }
 	}

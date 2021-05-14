@@ -34,14 +34,14 @@ uint32_t Web::webPutStart(const char *path, int size)
     
     if (! os_strcmp(path, "/firmware.bin"))
     {
-	// Обновление прошивки
+	// п·п╠п╫п╬п╡п╩п╣п╫п╦п╣ п©я─п╬я┬п╦п╡п╨п╦
 	if (size <= 0x7C000)
 	    return 0x80000 | 0x80000000; else
 	    return 0;
     } else
     if (! os_strcmp(path, "/fs.bin"))
     {
-	// Образ файловой системы
+	// п·п╠я─п╟п╥ я└п╟п╧п╩п╬п╡п╬п╧ я│п╦я│я┌п╣п╪я▀
 	if (size <= (int)ffs_image_size())
 	    return ffs_image_at() | 0x80000000; else
 	    return 0;
@@ -51,7 +51,7 @@ uint32_t Web::webPutStart(const char *path, int size)
     {
 	if (! os_strncmp(path, map[i].path, os_strlen(map[i].path)))
 	{
-	    // Нашли
+	    // п²п╟я┬п╩п╦
 	    type=map[i].type;
 	    path+=os_strlen(map[i].path);
 	    break;
@@ -59,14 +59,14 @@ uint32_t Web::webPutStart(const char *path, int size)
     }
     if (! type) return 0;
     
-    // Проверим, вдруг файл уже существует
+    // п÷я─п╬п╡п╣я─п╦п╪, п╡п╢я─я┐пЁ я└п╟п╧п╩ я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌
     if (ffs_find(path) >= 0) return 0;
     
-    // Создаем файл
+    // п║п╬п╥п╢п╟п╣п╪ я└п╟п╧п╩
     int16_t n=ffs_create(path, type, size);
     if (n<0) return 0;
     
-    // Возвращаем адрес во Flash
+    // п▓п╬п╥п╡я─п╟я┴п╟п╣п╪ п╟п╢я─п╣я│ п╡п╬ Flash
     return ffs_flash_addr(n) | 0x80000000;
 }
 
@@ -86,13 +86,13 @@ const char* Web::webPutEnd(const char *path)
 {
     if (! os_strcmp(path, "/firmware.bin"))
     {
-	// Закончилось обновление прошивки - надо перезагрузиться через 2 секунды
+	// п≈п╟п╨п╬п╫я┤п╦п╩п╬я│я▄ п╬п╠п╫п╬п╡п╩п╣п╫п╦п╣ п©я─п╬я┬п╦п╡п╨п╦ - п╫п╟п╢п╬ п©п╣я─п╣п╥п╟пЁя─я┐п╥п╦я┌я▄я│я▐ я┤п╣я─п╣п╥ 2 я│п╣п╨я┐п╫п╢я▀
 	os_timer_setfn(&reboot_tmr, (os_timer_func_t*)fw_done, 0);
         os_timer_arm(&reboot_tmr, 2000, 0);
     } else
     if (! os_strcmp(path, "/fs.bin"))
     {
-	// Закончилось обновление файловой системы - перчитаем FFS
+	// п≈п╟п╨п╬п╫я┤п╦п╩п╬я│я▄ п╬п╠п╫п╬п╡п╩п╣п╫п╦п╣ я└п╟п╧п╩п╬п╡п╬п╧ я│п╦я│я┌п╣п╪я▀ - п©п╣я─я┤п╦я┌п╟п╣п╪ FFS
 	ffs_init();
     }
     
@@ -102,7 +102,7 @@ const char* Web::webPutEnd(const char *path)
 
 const char* Web::webGet(const char *path, uint32_t *dataPtr, int *size)
 {
-    // Спец-пути
+    // п║п©п╣я├-п©я┐я┌п╦
     if (! os_strcmp(path, "/dir.js"))
     {
 	return getDir(dataPtr, size);
@@ -113,7 +113,7 @@ const char* Web::webGet(const char *path, uint32_t *dataPtr, int *size)
     } else
     if (! os_strcmp(path, "/fs.bin"))
     {
-	// Образ файловой системы
+	// п·п╠я─п╟п╥ я└п╟п╧п╩п╬п╡п╬п╧ я│п╦я│я┌п╣п╪я▀
 	(*dataPtr)=ffs_image_at() | 0x80000000;
 	(*size)=ffs_image_size();
 	
@@ -128,7 +128,7 @@ const char* Web::webGet(const char *path, uint32_t *dataPtr, int *size)
     {
 	if (! os_strncmp(path, map[i].path, os_strlen(map[i].path)))
 	{
-	    // Нашли
+	    // п²п╟я┬п╩п╦
 	    type=map[i].type;
 	    path+=os_strlen(map[i].path);
 	    break;
@@ -142,10 +142,10 @@ const char* Web::webGet(const char *path, uint32_t *dataPtr, int *size)
 
 const char* Web::getDir(uint32_t *dataPtr, int *size)
 {
-    // Код будет следующим: addFile(0x00,"",0x0000);\n (len=25)
+    // п п╬п╢ п╠я┐п╢п╣я┌ я│п╩п╣п╢я┐я▌я┴п╦п╪: addFile(0x00,"",0x0000);\n (len=25)
     os_printf("getdir\n");
     
-    // Считаем размер кода
+    // п║я┤п╦я┌п╟п╣п╪ я─п╟п╥п╪п╣я─ п╨п╬п╢п╟
     uint16_t dataSize=0;
     for (uint16_t n=0; n<FAT_SIZE; n++)
     {
@@ -154,17 +154,17 @@ const char* Web::getDir(uint32_t *dataPtr, int *size)
 	    dataSize+=25+os_strlen(ffs_name(n));
     }
     
-    // Информация о размере флэша: flashInfo(0x00000000, 0x00000000);\n (len=35)
+    // п≤п╫я└п╬я─п╪п╟я├п╦я▐ п╬ я─п╟п╥п╪п╣я─п╣ я└п╩я█я┬п╟: flashInfo(0x00000000, 0x00000000);\n (len=35)
     dataSize+=35;
     
-    // Информация о версии прошивки: fwInfo(0x0000);\n (len=16)
+    // п≤п╫я└п╬я─п╪п╟я├п╦я▐ п╬ п╡п╣я─я│п╦п╦ п©я─п╬я┬п╦п╡п╨п╦: fwInfo(0x0000);\n (len=16)
     dataSize+=16;
     
-    // Создаем данные
+    // п║п╬п╥п╢п╟п╣п╪ п╢п╟п╫п╫я▀п╣
     char *data=new char[dataSize+8];
     if (!data) return 0;
     
-    // Заполняем
+    // п≈п╟п©п╬п╩п╫я▐п╣п╪
     char *ss=data;
     for (uint16_t n=0; n<FAT_SIZE; n++)
     {

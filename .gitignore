@@ -8,3 +8,5 @@ soft/WiFiAPP/httpfs/httpfs.bin
 out/project.1.*
 _old
 
+soft/help/.DS_Store
+.DS_Store

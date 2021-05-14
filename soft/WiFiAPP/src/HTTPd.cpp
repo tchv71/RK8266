@@ -74,35 +74,35 @@ again:
     
     if (! http_method)
     {
-	// Обрабатываем все байты и делим их на строки. Строки уже будем разбирать
+	// п·п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪ п╡я│п╣ п╠п╟п╧я┌я▀ п╦ п╢п╣п╩п╦п╪ п╦я┘ п╫п╟ я│я┌я─п╬п╨п╦. п║я┌я─п╬п╨п╦ я┐п╤п╣ п╠я┐п╢п╣п╪ я─п╟п╥п╠п╦я─п╟я┌я▄
 	while (len)
 	{
     	    char cc=(char)(*data++); len--;
 	    
     	    if (cc=='\r')
     	    {
-        	// Пропускаем
+        	// п÷я─п╬п©я┐я│п╨п╟п╣п╪
     	    } else
     	    if (cc=='\n')
     	    {
-    		// Конец строки
+    		// п п╬п╫п╣я├ я│я┌я─п╬п╨п╦
         	buf[buflen]=0;
         	
-        	// Получаем строку в нижнем регистре
+        	// п÷п╬п╩я┐я┤п╟п╣п╪ я│я┌я─п╬п╨я┐ п╡ п╫п╦п╤п╫п╣п╪ я─п╣пЁп╦я│я┌я─п╣
         	char buf_l[buflen+1];
         	for (int i=0; i<buflen; i++)
         	    buf_l[i]=to_lower(buf[i]);
         	buf_l[buflen]=0;
 		
-		// Сбрасываем длину буфера
+		// п║п╠я─п╟я│я▀п╡п╟п╣п╪ п╢п╩п╦п╫я┐ п╠я┐я└п╣я─п╟
         	buflen=0;
 		
         	DEBUG("HTTPd: '%s'\n", buf);
         	
-        	// Читаем все заголовки
+        	// п╖п╦я┌п╟п╣п╪ п╡я│п╣ п╥п╟пЁп╬п╩п╬п╡п╨п╦
         	if (! os_strncmp(buf_l, "put /", 5))
         	{
-        	    // Закачка
+        	    // п≈п╟п╨п╟я┤п╨п╟
         	    char *path=buf+4;
         	    for (char *ss=path; *ss; ss++)
         		if ((*ss)==' ')
@@ -115,7 +115,7 @@ again:
         	} else
         	if (! os_strncmp(buf_l, "get /", 5))
         	{
-        	    // Скачивание
+        	    // п║п╨п╟я┤п╦п╡п╟п╫п╦п╣
         	    char *path=buf+4;
         	    for (char *ss=path; *ss; ss++)
         		if ((*ss)==' ')
@@ -127,38 +127,38 @@ again:
         	} else
         	if (! os_strncmp(buf_l, "content-length: ", 16))
         	{
-        	    // Размер для закачки
+        	    // п═п╟п╥п╪п╣я─ п╢п╩я▐ п╥п╟п╨п╟я┤п╨п╦
         	    put.contentLength=parse_int(buf+16);
         	} else
         	if (! buf[0])
         	{
-        	    // Конец заголовков
+        	    // п п╬п╫п╣я├ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡
         	    if (get.path)
         	    {
-        		// Это GET
+        		// п╜я┌п╬ GET
         		DEBUG("HTTPd: GET method\n");
         		http_method=METHOD_GET;
         		
-        		// Ищем у обработчика
+        		// п≤я┴п╣п╪ я┐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟
         		if (handler)
         		{
         		    const char *headers=handler->webGet(get.path, &get.addr, &get.size);
         		    if (headers)
         		    {
-        			// Если адрес в памяти - надо будет его удалить
+        			// п∙я│п╩п╦ п╟п╢я─п╣я│ п╡ п©п╟п╪я▐я┌п╦ - п╫п╟п╢п╬ п╠я┐п╢п╣я┌ п╣пЁп╬ я┐п╢п╟п╩п╦я┌я▄
         			if ( (get.addr) && (!(get.addr & 0x80000000)) ) get.buf2free=(void*)get.addr;
         			
-        			// Сразу отправляем заголовки
+        			// п║я─п╟п╥я┐ п╬я┌п©я─п╟п╡п╩я▐п╣п╪ п╥п╟пЁп╬п╩п╬п╡п╨п╦
         			send((const uint8_t*)headers, os_strlen(headers));
         			delete[] headers;
         			return;
         		    }
         		}
         		
-    			// Ищем в файловой системе
+    			// п≤я┴п╣п╪ п╡ я└п╟п╧п╩п╬п╡п╬п╧ я│п╦я│я┌п╣п╪п╣
     			if (! httpFS(get.path))
     			{
-    			    // Не найден
+    			    // п²п╣ п╫п╟п╧п╢п╣п╫
                             os_strcpy(buf, "HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\nFile not found");
                             send((const uint8_t*)buf, os_strlen(buf));
                             close();
@@ -167,22 +167,22 @@ again:
         	    } else
         	    if ( (put.path) && (put.contentLength>0) )
         	    {
-        		// Это PUT
+        		// п╜я┌п╬ PUT
         		DEBUG("HTTPd: PUT request for '%s' size=%d\n", put.path, put.contentLength);
         		http_method=METHOD_PUT;
         		
         		if (! os_strcmp(put.path, "/httpfs.bin"))
         		{
-        		    // Обновление файлов
+        		    // п·п╠п╫п╬п╡п╩п╣п╫п╦п╣ я└п╟п╧п╩п╬п╡
         		    put.addr=FLASH_HTTP_DATA | 0x80000000;
         		} else
         		if (handler)
         		{
-        		    // Обработчик
+        		    // п·п╠я─п╟п╠п╬я┌я┤п╦п╨
         		    put.addr=handler->webPutStart(put.path, put.contentLength);
         		    if (put.addr==0)
         		    {
-        			// Ошибка
+        			// п·я┬п╦п╠п╨п╟
         			static const char *str="HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\nFile not found";
         			send((const uint8_t*)str, os_strlen(str));
         			close();
@@ -190,7 +190,7 @@ again:
         		    }
         		} else
         		{
-        		    // Нет обработчика
+        		    // п²п╣я┌ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟
         		    static const char *str="HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\nFile not found";
         		    send((const uint8_t*)str, os_strlen(str));
         		    close();
@@ -202,7 +202,7 @@ again:
         		goto again;
         	    } else
         	    {
-        		// Ошибка
+        		// п·я┬п╦п╠п╨п╟
         		static const char *str="HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n";
         		send((const uint8_t*)str, os_strlen(str));
         		close();
@@ -211,24 +211,24 @@ again:
         	}
     	    } else
     	    {
-        	// Просто символ
+        	// п÷я─п╬я│я┌п╬ я│п╦п╪п╡п╬п╩
         	if (buflen < (int)(sizeof(buf)-1)) buf[buflen++]=cc;
     	    }
 	}
     } else
     if (http_method==METHOD_PUT)
     {
-	// Обрабатываем данные PUT
+	// п·п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪ п╢п╟п╫п╫я▀п╣ PUT
 	if (len > put.size) len=put.size;
 	
 	handler->webPutData(put.path, data, len);
 	
 	if (put.addr & 0x80000000)
 	{
-	    // Запись во флэш
+	    // п≈п╟п©п╦я│я▄ п╡п╬ я└п╩я█я┬
 	    while (len > 0)
 	    {
-    		// Помещаем в буфер
+    		// п÷п╬п╪п╣я┴п╟п╣п╪ п╡ п╠я┐я└п╣я─
     		int l=len;
     		if (l > PUT_BUFFER_SIZE-put.bufferPos) l=PUT_BUFFER_SIZE-put.bufferPos;
     		os_memcpy(put.buffer+put.bufferPos, data, l);
@@ -239,24 +239,24 @@ again:
     		
     		if ( (put.bufferPos >= PUT_BUFFER_SIZE) || (put.size <= 0) )
     		{
-    		    // Конец буфера или данных PUT - надо записать
+    		    // п п╬п╫п╣я├ п╠я┐я└п╣я─п╟ п╦п╩п╦ п╢п╟п╫п╫я▀я┘ PUT - п╫п╟п╢п╬ п╥п╟п©п╦я│п╟я┌я▄
     		    
-        	    // Заполняем 0xff незанятую часть данных
+        	    // п≈п╟п©п╬п╩п╫я▐п╣п╪ 0xff п╫п╣п╥п╟п╫я▐я┌я┐я▌ я┤п╟я│я┌я▄ п╢п╟п╫п╫я▀я┘
         	    if (put.bufferPos < PUT_BUFFER_SIZE)
             		os_memset(put.buffer+put.bufferPos, 0xff, PUT_BUFFER_SIZE-put.bufferPos);
 		    
-        	    // Если запись в начало сектора - стираем его предварительно
+        	    // п∙я│п╩п╦ п╥п╟п©п╦я│я▄ п╡ п╫п╟я┤п╟п╩п╬ я│п╣п╨я┌п╬я─п╟ - я│я┌п╦я─п╟п╣п╪ п╣пЁп╬ п©я─п╣п╢п╡п╟я─п╦я┌п╣п╩я▄п╫п╬
         	    if ( (put.addr & (SPI_FLASH_SEC_SIZE-1)) == 0 )
         	    {
             		DEBUG("HTTPd: erase flash 0x%02X\n", (unsigned int)((put.addr & 0x7fffffff) / SPI_FLASH_SEC_SIZE));
             		spi_flash_erase_sector((put.addr & 0x7fffffff) / SPI_FLASH_SEC_SIZE);
         	    }
 		    
-        	    // Записываем
+        	    // п≈п╟п©п╦я│я▀п╡п╟п╣п╪
         	    DEBUG("HTTPd: write flash 0x%X size=%d\n", (unsigned int)(put.addr & 0x7fffffff), put.bufferPos);
         	    spi_flash_write(put.addr & 0x7fffffff, (uint32*)put.buffer, PUT_BUFFER_SIZE);
 		    
-		    // Сверяем то, что записали
+		    // п║п╡п╣я─я▐п╣п╪ я┌п╬, я┤я┌п╬ п╥п╟п©п╦я│п╟п╩п╦
 		    uint8_t *tmp=(uint8_t*)os_malloc(PUT_BUFFER_SIZE);
 		    if (tmp) spi_flash_read(put.addr & 0x7fffffff, (uint32*)tmp, PUT_BUFFER_SIZE);
 		    if ( (!tmp) || (os_memcmp(put.buffer, tmp, PUT_BUFFER_SIZE) != 0) )
@@ -282,7 +282,7 @@ again:
 	    }
 	} else
 	{
-	    // Запись в ОЗУ
+	    // п≈п╟п©п╦я│я▄ п╡ п·п≈пё
 	    os_memcpy((uint8_t*)put.addr, data, len);
 	    put.addr+=len;
 	    put.size-=len;
@@ -290,7 +290,7 @@ again:
 	
 	if (put.size <= 0)
 	{
-	    // Конец данных
+	    // п п╬п╫п╣я├ п╢п╟п╫п╫я▀я┘
 	    const char *answer=handler->webPutEnd(put.path);
 	    if (! answer)
 	    {
@@ -313,7 +313,7 @@ again:
     } else
     if (http_method==METHOD_GET)
     {
-	// У GET не может быть данных
+	// пё GET п╫п╣ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╢п╟п╫п╫я▀я┘
 	return;
     }
     
@@ -329,7 +329,7 @@ void HTTPd::dataSent()
     {
 	if ( (get.addr==0) || (get.size<=0) )
 	{
-	    // Нет данных
+	    // п²п╣я┌ п╢п╟п╫п╫я▀я┘
             close();
             http_method=0;
             return;
@@ -341,16 +341,16 @@ void HTTPd::dataSent()
 	
 	if (get.addr & 0x80000000)
 	{
-    	    // Читаем flash
+    	    // п╖п╦я┌п╟п╣п╪ flash
     	    int l32=(l+3) & ~3;
     	    spi_flash_read(get.addr & 0x7fffffff, (uint32*)buf, l32);
     	} else
     	{
-    	    // Читаем память
+    	    // п╖п╦я┌п╟п╣п╪ п©п╟п╪я▐я┌я▄
     	    os_memcpy(buf, (void*)(get.addr & 0x7fffffff), l);
     	}
 	
-        // Отправляем
+        // п·я┌п©я─п╟п╡п╩я▐п╣п╪
         if (send((const uint8_t*)buf, l))
         {
     	    get.addr+=l;
@@ -359,7 +359,7 @@ void HTTPd::dataSent()
 	
         if (get.size <= 0)
         {
-            // Конец данных
+            // п п╬п╫п╣я├ п╢п╟п╫п╫я▀я┘
             close();
             http_method=0;
         }
@@ -369,7 +369,7 @@ void HTTPd::dataSent()
 
 bool HTTPd::httpFS(const char *path)
 {
-    // Проверим на корень
+    // п÷я─п╬п╡п╣я─п╦п╪ п╫п╟ п╨п╬я─п╣п╫я▄
     if ( (path[0]=='/') && (path[1]==0) ) path="/index.html";
     
     for (uint8_t i=0; i<64; i++)
@@ -381,21 +381,21 @@ bool HTTPd::httpFS(const char *path)
             int offset;
         } e;
         spi_flash_read(FLASH_HTTP_DATA + i*sizeof(struct ent), (uint32*)&e, sizeof(struct ent));
-        if (! e.name[0]) break; // конец списка
+        if (! e.name[0]) break; // п╨п╬п╫п╣я├ я│п©п╦я│п╨п╟
         //DEBUG("HTTPd: fs '%s'\n", e.name);
         if (! os_strcmp(path, e.name))
         {
-            // Нашли
+            // п²п╟я┬п╩п╦
             DEBUG("HTTPD: found '%s' size=%d offset=0x%x\n", e.name, e.len, e.offset);
             get.addr=(FLASH_HTTP_DATA + e.offset) | 0x80000000;
             get.size=e.len;
             
-            // Сразу отправляем первый фрагмент
+            // п║я─п╟п╥я┐ п╬я┌п©я─п╟п╡п╩я▐п╣п╪ п©п╣я─п╡я▀п╧ я└я─п╟пЁп╪п╣п╫я┌
             dataSent();
             return true;
         }
     }
 
-    // Не нашли
+    // п²п╣ п╫п╟я┬п╩п╦
     return false;
 }

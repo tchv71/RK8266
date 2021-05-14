@@ -33,15 +33,15 @@ static void thread_sched(Thread *thr)
     thread_sleep=0;
     if (PT_SCHEDULE(thr->run(&thr->_thread)))
     {
-        // Еще работает задача
+        // п∙я┴п╣ я─п╟п╠п╬я┌п╟п╣я┌ п╥п╟п╢п╟я┤п╟
         if (thread_sleep > 0)
         {
-            // Уснуть на время
+            // пёя│п╫я┐я┌я▄ п╫п╟ п╡я─п╣п╪я▐
             os_timer_disarm(&thr->_thread_tmr);
             os_timer_arm(&thr->_thread_tmr, thread_sleep, 0);
         } else
         {
-            // Переключить контекст
+            // п÷п╣я─п╣п╨п╩я▌я┤п╦я┌я▄ п╨п╬п╫я┌п╣п╨я│я┌
             system_os_post(THREAD_PRIO, 0, (os_param_t)thr);
         }
     }

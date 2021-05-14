@@ -10,32 +10,32 @@ extern "C" {
 #endif
 
 
-// Модификаторы
+// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
 #define MOD_SS		0x20
 #define MOD_US		0x40
 #define MOD_RL		0x80
 
 
-// Строка 0
-#define RK_HOME		0x0001	// стрелка влево-вверх
-#define RK_STR		0x0002	// СТР
-#define RK_AR2		0x0004	// АР2
-#define RK_F1		0x0008	// Ф1
-#define RK_F2		0x0010	// Ф2
-#define RK_F3		0x0020	// Ф3
-#define RK_F4		0x0040	// Ф4
+// п║я┌я─п╬п╨п╟ 0
+#define RK_HOME		0x0001	// я│я┌я─п╣п╩п╨п╟ п╡п╩п╣п╡п╬-п╡п╡п╣я─я┘
+#define RK_STR		0x0002	// п║п╒п═
+#define RK_AR2		0x0004	// п░п═2
+#define RK_F1		0x0008	// п╓1
+#define RK_F2		0x0010	// п╓2
+#define RK_F3		0x0020	// п╓3
+#define RK_F4		0x0040	// п╓4
 
-// Строка 1
-#define RK_TAB		0x0101	// ТАБ
-#define RK_PS		0x0102	// ПС
-#define RK_VK		0x0104	// ВК
-#define RK_ZB		0x0108	// ЗБ
+// п║я┌я─п╬п╨п╟ 1
+#define RK_TAB		0x0101	// п╒п░п▒
+#define RK_PS		0x0102	// п÷п║
+#define RK_VK		0x0104	// п▓п 
+#define RK_ZB		0x0108	// п≈п▒
 #define RK_LEFT		0x0110	// <-
-#define RK_UP		0x0120	// Вверх
+#define RK_UP		0x0120	// п▓п╡п╣я─я┘
 #define RK_RIGHT	0x0140	// ->
-#define RK_DOWN		0x0180	// Вниз
+#define RK_DOWN		0x0180	// п▓п╫п╦п╥
 
-// Строка 2
+// п║я┌я─п╬п╨п╟ 2
 #define RK_0		0x0201	// 0
 #define RK_1		0x0202	// 1
 #define RK_2		0x0204	// 2
@@ -45,7 +45,7 @@ extern "C" {
 #define RK_6		0x0240	// 6
 #define RK_7		0x0280	// 7
 
-// Строка 3
+// п║я┌я─п╬п╨п╟ 3
 #define RK_8		0x0301	// 8
 #define RK_9		0x0302	// 9
 #define RK_STAR		0x0304	// *
@@ -55,50 +55,50 @@ extern "C" {
 #define RK_PERIOD	0x0340	// .
 #define RK_SLASH	0x0380	// /
 
-// Строка 4
-#define RK_AT		0x0401	// @ Ю
-#define RK_A		0x0402	// A А
-#define RK_B		0x0404	// B Б
-#define RK_C		0x0408	// C Ц
-#define RK_D		0x0410	// D Д
-#define RK_E		0x0420	// E Е
-#define RK_F		0x0440	// F Ф
-#define RK_G		0x0480	// G Г
+// п║я┌я─п╬п╨п╟ 4
+#define RK_AT		0x0401	// @ п╝
+#define RK_A		0x0402	// A п░
+#define RK_B		0x0404	// B п▒
+#define RK_C		0x0408	// C п╕
+#define RK_D		0x0410	// D п■
+#define RK_E		0x0420	// E п∙
+#define RK_F		0x0440	// F п╓
+#define RK_G		0x0480	// G п⌠
 
-// Строка 5
-#define RK_H		0x0501	// H Х
-#define RK_I		0x0502	// I И
-#define RK_J		0x0504	// J Й
-#define RK_K		0x0508	// K К
-#define RK_L		0x0510	// L Л
-#define RK_M		0x0520	// M М
-#define RK_N		0x0540	// N Н
-#define RK_O		0x0580	// O О
+// п║я┌я─п╬п╨п╟ 5
+#define RK_H		0x0501	// H п╔
+#define RK_I		0x0502	// I п≤
+#define RK_J		0x0504	// J п≥
+#define RK_K		0x0508	// K п 
+#define RK_L		0x0510	// L п⌡
+#define RK_M		0x0520	// M п°
+#define RK_N		0x0540	// N п²
+#define RK_O		0x0580	// O п·
 
-// Строка 6
-#define RK_P		0x0601	// P П
-#define RK_Q		0x0602	// Q Я
-#define RK_R		0x0604	// R Р
-#define RK_S		0x0608	// S С
-#define RK_T		0x0610	// T Т
-#define RK_U		0x0620	// U У
-#define RK_V		0x0640	// V Ж
-#define RK_W		0x0680	// W В
+// п║я┌я─п╬п╨п╟ 6
+#define RK_P		0x0601	// P п÷
+#define RK_Q		0x0602	// Q п╞
+#define RK_R		0x0604	// R п═
+#define RK_S		0x0608	// S п║
+#define RK_T		0x0610	// T п╒
+#define RK_U		0x0620	// U пё
+#define RK_V		0x0640	// V п√
+#define RK_W		0x0680	// W п▓
 
-// Строка 7
-#define RK_X		0x0701	// X Ь
-#define RK_Y		0x0702	// Y Ы
-#define RK_Z		0x0704	// Z З
-#define RK_L_BRACKET	0x0708	// [ Ш
-#define RK_BACK_SLASH	0x0710	// \ Э
-#define RK_R_BRACKET	0x0720	// ] Щ
-#define RK_CARET	0x0740	// ^ Ч
+// п║я┌я─п╬п╨п╟ 7
+#define RK_X		0x0701	// X п╛
+#define RK_Y		0x0702	// Y п╚
+#define RK_Z		0x0704	// Z п≈
+#define RK_L_BRACKET	0x0708	// [ п╗
+#define RK_BACK_SLASH	0x0710	// \ п╜
+#define RK_R_BRACKET	0x0720	// ] п╘
+#define RK_CARET	0x0740	// ^ п╖
 #define RK_SPACE	0x0780	// SPACE
 
-// Модификаторы
-#define RK_SS		0x2000	// СС
-#define RK_US		0x4000	// УС
-#define RK_RL		0x8000	// РУЧ/ЛАТ
+// п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀
+#define RK_SS		0x2000	// п║п║
+#define RK_US		0x4000	// пёп║
+#define RK_RL		0x8000	// п═пёп║/п⌡п░п╒
 
 
 void kbd_init(void);

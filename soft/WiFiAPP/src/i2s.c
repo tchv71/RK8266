@@ -194,7 +194,7 @@ static void RAMFUNC i2s_int(void)
     
     if (slc_intr_status & SLC_RX_EOF_INT_ST)
     {
-	// åÓÔØ ÂÕÆÅÒ ÄÌÑ ÚÁÐÏÌÎÅÎÉÑ
+	// Ð•ÑÑ‚ÑŒ Ð±ÑƒÑ„ÐµÑ€ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ
 	struct sdio_queue *desc=(struct sdio_queue*)READ_PERI_REG(SLC_RX_EOF_DES_ADDR);
 	desc->buf_ptr=(uint32_t)i2s_cb();
     }

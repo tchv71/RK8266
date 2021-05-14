@@ -5,7 +5,7 @@
 #include "font_8x12.h"
 
 
-#define N_BUFS	8	// должно быть больше 4
+#define N_BUFS	8	// п╢п╬п╩п╤п╫п╬ п╠я▀я┌я▄ п╠п╬п╩я▄я┬п╣ 4
 
 static uint8_t buf[N_BUFS][80];
 static volatile uint8_t buf_n=0;
@@ -23,7 +23,7 @@ static void RAMFUNC render_line(uint8_t *data)
 {
     if ( (line < 38) || (y>=20) )
     {
-	// Пустые строки в начале и в конце кадра
+	// п÷я┐я│я┌я▀п╣ я│я┌я─п╬п╨п╦ п╡ п╫п╟я┤п╟п╩п╣ п╦ п╡ п╨п╬п╫я├п╣ п╨п╟п╢я─п╟
 	uint8_t i, x=21;
 	for (i=0; i<50; i++)
 	{
@@ -31,13 +31,13 @@ static void RAMFUNC render_line(uint8_t *data)
 	}
     } else
     {
-	// Рисуем строку
+	// п═п╦я│я┐п╣п╪ я│я┌я─п╬п╨я┐
 	const uint8_t *z=font_8x12+( ((uint16_t)l) << 8 );
 	uint8_t i, x=21;
 	uint8_t *t=txt;
 	if (y==0)
 	{
-	    // Строка 0 - выделяем ее (это статус)
+	    // п║я┌я─п╬п╨п╟ 0 - п╡я▀п╢п╣п╩я▐п╣п╪ п╣п╣ (я█я┌п╬ я│я┌п╟я┌я┐я│)
 	    for (i=0; i<50; i++)
 		data[(x++) ^ 0x03]=z[*t++] ^ 0xff;
 	} else
@@ -46,24 +46,24 @@ static void RAMFUNC render_line(uint8_t *data)
 		data[(x++) ^ 0x03]=z[*t++];
 	}
 	
-	// Рисуем курсор
+	// п═п╦я│я┐п╣п╪ п╨я┐я─я│п╬я─
 	if ( (y == cursor_y) && (cursor_x < 50) && (blink & 16) )
 	{
 	    data[(21+cursor_x) ^ 0x03]^=0xFF;
 	}
 	
-	// Следующий номер линии в строке
+	// п║п╩п╣п╢я┐я▌я┴п╦п╧ п╫п╬п╪п╣я─ п╩п╦п╫п╦п╦ п╡ я│я┌я─п╬п╨п╣
 	l++;
 	if (l >= 12)
 	{
-	    // Следующая строка текста
+	    // п║п╩п╣п╢я┐я▌я┴п╟я▐ я│я┌я─п╬п╨п╟ я┌п╣п╨я│я┌п╟
 	    l=0;
 	    txt+=50;
 	    y++;
 	}
     }
     
-    // Выбираем следующую строку
+    // п▓я▀п╠п╦я─п╟п╣п╪ я│п╩п╣п╢я┐я▌я┴я┐я▌ я│я┌я─п╬п╨я┐
     line++;
 }
 
@@ -74,7 +74,7 @@ void tv_data_init(void)
     
     memset(vram, 0x00, sizeof(vram));
     
-    // Копируем в буфера пустую строку (в ней синхра)
+    // п п╬п©п╦я─я┐п╣п╪ п╡ п╠я┐я└п╣я─п╟ п©я┐я│я┌я┐я▌ я│я┌я─п╬п╨я┐ (п╡ п╫п╣п╧ я│п╦п╫я┘я─п╟)
     for (i=0; i<N_BUFS; i++)
 	os_memcpy(buf[i], tv_empty_line, 80);
 }
@@ -82,20 +82,20 @@ void tv_data_init(void)
 
 void RAMFUNC tv_data_field(void)
 {
-    // Начало поля
+    // п²п╟я┤п╟п╩п╬ п©п╬п╩я▐
     line=0;
     l=0;
     y=0;
     txt=(uint8_t*)vram;
     
-    // Мигание курсора
+    // п°п╦пЁп╟п╫п╦п╣ п╨я┐я─я│п╬я─п╟
     blink++;
 }
 
 
 uint8_t* RAMFUNC tv_data_line(void)
 {
-    // Возвращаем следующий буфер в FIFO
+    // п▓п╬п╥п╡я─п╟я┴п╟п╣п╪ я│п╩п╣п╢я┐я▌я┴п╦п╧ п╠я┐я└п╣я─ п╡ FIFO
     uint8_t *data=buf[(buf_n++) & (N_BUFS-1)];
     render_line(data);
     return data;
