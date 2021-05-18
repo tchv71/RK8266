@@ -280,6 +280,7 @@ select_ssid:
 }
 
 
+#if 0
 static void font_tab(void)
 {
     static const char *hex="0123456789ABCDEF";
@@ -294,6 +295,7 @@ static void font_tab(void)
 	}
     }
 }
+#endif
 
 
 THREAD(main_thread)
@@ -358,10 +360,11 @@ THREAD(heap_thread)
     PT_END(pt);
 }
 
-
+#if 0
 static void RAMFUNC my_putc1(char c)
 {
 }
+#endif
 
 
 extern "C" void user_init(void);

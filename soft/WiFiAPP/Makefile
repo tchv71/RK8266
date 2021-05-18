@@ -59,15 +59,15 @@ FLASH_SECTIONS+= \
 ##############################################################################
 ##  Compiler information
 ##############################################################################
-SDK=/home/heavy/KLAD/x-tools/esp8266/sdk
-export PATH := /home/heavy/KLAD/x-tools/esp8266/xtensa-lx106-elf/bin:$(PATH)
+SDK=/Users/tchv/RK/RK8266/esp_iot_sdk_v1.5.3
+export PATH := /Users/tchv/esp/xtensa-lx106-elf-gcc/2.5.0-4-b40a506/bin:$(PATH)
 BUILD_NUMBER=$(shell git rev-list --count HEAD)
 
 CC=xtensa-lx106-elf-gcc
 CPP=xtensa-lx106-elf-g++
 OBJCOPY=xtensa-lx106-elf-objcopy
 OBJDUMP=xtensa-lx106-elf-objdump
-INCLUDES=-I$(SDK)/include -Isrc/
+INCLUDES=-I$(SDK)/include -Isrc
 CFLAGS=-Wall -Wshadow -DICACHE_FLASH -O3 -mlongcalls \
     -mtext-section-literals \
     $(INCLUDES) -ffunction-sections -fdata-sections

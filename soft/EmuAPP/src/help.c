@@ -1,4 +1,4 @@
-d#include "help.h"
+#include "help.h"
 
 #include "ets.h"
 #include "vg75.h"

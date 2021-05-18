@@ -179,7 +179,7 @@ int main()
 	
 	while ( (ss=strstr(txt, "---")) )
 	{
-	    int p=(int)ss - (int)lines[i].text;
+	    int p=(int)((const unsigned char*)ss - lines[i].text);
 	    
 #define ISPG(c) ( ((c)=='-') || ((c)=='+') || ((c)=='\\') || ((((uint8_t)(c)) & 0xC0) == 0xC0) )
 	    

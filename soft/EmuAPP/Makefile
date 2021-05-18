@@ -52,7 +52,7 @@ DEPDIR=.dep
 ##############################################################################
 ##  Compiler information
 ##############################################################################
-export PATH := /home/heavy/KLAD/x-tools/esp8266/xtensa-lx106-elf/bin:$(PATH)
+export PATH := /Users/tchv/esp/xtensa-lx106-elf-gcc/2.5.0-4-b40a506/bin:$(PATH)
 BUILD_NUMBER=$(shell git rev-list --count HEAD)
 
 CC=xtensa-lx106-elf-gcc
@@ -131,7 +131,7 @@ $(DEPDIR)/%.d: %.c
 
 # Rule for compiling C files
 $(OBJDIR)/%.o: %.c
-	@echo "Compiling $<"; \
+	@echo "Compiling $< $(CC)"; \
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 

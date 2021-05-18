@@ -43,7 +43,7 @@ DEPDIR=.dep
 ##############################################################################
 ##  Compiler information
 ##############################################################################
-export PATH := /home/heavy/KLAD/x-tools/esp8266/xtensa-lx106-elf/bin:$(PATH)
+export PATH := /Users/tchv/Library/Arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-4-b40a506/bin:$(PATH)
 
 CC=xtensa-lx106-elf-gcc
 INCLUDES=-I$(SRCDIR)
@@ -52,7 +52,7 @@ LIBS=
 LD_SCRIPT=$(SRCDIR)/eagle.app.v6.ld
 LDFLAGS=-nostdlib -Wl,--no-check-sections -u call_user_start -Wl,-static $(LIBS)
 ESPTOOL=esptool.py
-ESPTOOL2=/home/heavy/KLAD/x-tools/esp8266/esptool2/esptool2
+ESPTOOL2=/Users/tchv/esp/esptool2/esptool2
 ##############################################################################
 
 
